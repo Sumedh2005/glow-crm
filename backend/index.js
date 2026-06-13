@@ -1,3 +1,4 @@
+console.log('Boot: build version 2')
 process.on('uncaughtException', (err) => {
     console.error('UNCAUGHT EXCEPTION:', err)
 })
