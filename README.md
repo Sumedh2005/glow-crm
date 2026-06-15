@@ -12,8 +12,8 @@ Built for the [Xeno](https://getxeno.com) FDE Internship Assignment — June 202
 | | |
 |---|---|
 | Frontend | https://glow-crm.netlify.app |
-| Backend API | https://glow-crm-production-f2d6.up.railway.app |
-| Channel Service | https://glow-crm-production.up.railway.app |
+| Backend API | https://glow-crm-production-f2d6.up.railway.app/health |
+| Channel Service | https://glow-crm-production.up.railway.app/health |
 
 ---
 
