@@ -50,7 +50,8 @@ glow-crm/
 
 ## Links
 
-- **Pitch Deck** — https://drive.google.com/file/d/1-yM43-SXEUAD6PhdMrv1uk7EnAJmuaoD/view?usp=sharing
+- **Pitch Deck** — https://drive.google.com/file/d/1-yM43-SXEUAD6PhdMrv1uk7EnAJmuaoD/view?usp=sharing- 
+- **Video** — https://youtu.be/N2Z0RCISmLw
 - **Figma** — https://www.figma.com/design/5rMamfnP4DVcdxviYcRvAN/Xeno?node-id=0-1&t=qtnoEzyUxk7qYKe9-1
 
 ---
