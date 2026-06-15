@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/layout/Sidebar'
 import { getAIInsights } from '@/lib/api'
 
-// Map insight tags to segment filters + counts for direct campaign creation
 function buildSegmentFromInsight(insight, summary) {
   const tag = (insight.tag || '').toLowerCase()
 
@@ -44,7 +43,6 @@ function buildSegmentFromInsight(insight, summary) {
       customer_count: summary?.total || 0,
     }
   }
-  // Fallback — generic segment from whatever the insight describes
   return {
     id: 'insight-generic',
     name: insight.title || 'AI Suggested Audience',
@@ -54,48 +52,20 @@ function buildSegmentFromInsight(insight, summary) {
   }
 }
 
-// Helper function to get card color based on insight tag/severity
 function getInsightColor(tag, priority) {
   const tagLower = (tag || '').toLowerCase()
   const priorityLower = (priority || '').toLowerCase()
 
-  // High severity - Red/Warning
   if (tagLower.includes('churn') || tagLower.includes('overdue') || priorityLower.includes('high')) {
-    return {
-      tagBg: '#FEE2E2',
-      tagColor: '#991B1B',
-      priorityColor: '#EF4444',
-      buttonColor: '#EF4444'
-    }
+    return { tagBg: '#FEE2E2', tagColor: '#991B1B', priorityColor: '#EF4444', buttonColor: '#EF4444' }
   }
-
-  // Medium severity - Yellow/Warning
   if (tagLower.includes('restock') || tagLower.includes('due_soon') || priorityLower.includes('medium')) {
-    return {
-      tagBg: '#FEF9C3',
-      tagColor: '#854D0E',
-      priorityColor: '#F59E0B',
-      buttonColor: '#F59E0B'
-    }
+    return { tagBg: '#FEF9C3', tagColor: '#854D0E', priorityColor: '#F59E0B', buttonColor: '#F59E0B' }
   }
-
-  // Low severity / Opportunity - Green
   if (tagLower.includes('aov') || tagLower.includes('product') || tagLower.includes('recommend') || priorityLower.includes('low')) {
-    return {
-      tagBg: '#DCFCE7',
-      tagColor: '#166534',
-      priorityColor: '#10B981',
-      buttonColor: '#10B981'
-    }
+    return { tagBg: '#DCFCE7', tagColor: '#166534', priorityColor: '#10B981', buttonColor: '#10B981' }
   }
-
-  // Default - Blue
-  return {
-    tagBg: '#DBEAFE',
-    tagColor: '#1E40AF',
-    priorityColor: '#3B82F6',
-    buttonColor: '#3B82F6'
-  }
+  return { tagBg: '#DBEAFE', tagColor: '#1E40AF', priorityColor: '#3B82F6', buttonColor: '#3B82F6' }
 }
 
 export default function Insights() {
@@ -132,21 +102,13 @@ export default function Insights() {
     <div style={{ display: 'flex', position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 50 }}>
       <Sidebar />
       <main style={{
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontFamily: "'Inter', system-ui, -apple-system, sans-serif"
       }}>
         <div style={{ textAlign: 'center' }}>
-          {/* Rotating Black Logo */}
           <div style={{
-            width: 80,
-            height: 80,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 24px',
+            width: 80, height: 80, display: 'flex', alignItems: 'center',
+            justifyContent: 'center', margin: '0 auto 24px',
             animation: 'spin 2s linear infinite'
           }}>
             <span style={{ fontSize: 64, color: '#000000' }}>✦</span>
@@ -158,12 +120,8 @@ export default function Insights() {
       </main>
       <style jsx>{`
         @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
       `}</style>
     </div>
@@ -194,67 +152,58 @@ export default function Insights() {
           </p>
         </div>
 
-        {/* Top Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, marginBottom: 32 }}>
+        {/* Top Stats — 3 cards: Revenue Window, Overdue, Due Soon */}
+       {/* Top Stats — 4 cards */}
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24, marginBottom: 36 }}>
+  {[
+    {
+      label: 'Restock Revenue Window',
+      value: `₹${Math.round(predictedRevenue).toLocaleString()}`,
+      sub: `${summary?.due_soon || 0} customers in restock window`,
+      subColor: 'var(--label)'
+    },
+    {
+      label: 'On Track',
+      value: summary?.on_track || 0,
+      sub: 'Customers within their purchase cycle',
+      subColor: '#059669'
+    },
+    {
+      label: 'Due Soon',
+      value: summary?.due_soon || 0,
+      sub: 'Within 7 days of restock window — act now',
+      subColor: '#F59E0B'
+    },
+    {
+      label: 'Overdue',
+      value: summary?.overdue || 0,
+      sub: 'Past their product lifespan — restock missed',
+      subColor: '#EF4444'
+    },
+  ].map((stat, i) => (
+    <div key={i} className="card" style={{ borderRadius: 25 }}>
+      <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--label)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>{stat.label}</p>
+      <p className="stat-number">{stat.value}</p>
+      <p style={{ fontSize: 13, color: stat.subColor, marginTop: 12, fontWeight: 500 }}>{stat.sub}</p>
+    </div>
+  ))}
+</div>
 
-          <div className="card" style={{ position: 'relative', overflow: 'hidden', borderRadius: 16 }}>
-            <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--label)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>
-              Restock Revenue Window
-            </p>
-            <p style={{ fontSize: 32, fontWeight: 700, color: '#3B82F6', marginBottom: 8 }}>
-              ₹{Math.round(predictedRevenue).toLocaleString()}
-            </p>
-            <p style={{ fontSize: 12, color: 'var(--label)' }}>
-              Sum of AOV · {summary?.due_soon || 0} customers in restock window
-            </p>
-          </div>
+        {/* Insight cards label */}
+        <p style={{ fontSize: 13, color: 'var(--label)', marginBottom: 16 }}>
+          {insights.length} insights generated by Groq (Llama 3.1) · Based on {total} customer records
+        </p>
 
-          <div className="card" style={{ borderRadius: 16 }}>
-            <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--label)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>
-              Insights Generated
-            </p>
-            <p style={{ fontSize: 32, fontWeight: 700, color: '#3B82F6', marginBottom: 8 }}>{insights.length}</p>
-            <p style={{ fontSize: 12, color: 'var(--label)' }}>Based on {total} customer records · Updated just now</p>
-          </div>
-
-          <div className="card" style={{ position: 'relative', overflow: 'hidden', borderRadius: 16 }}>
-            <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--label)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 8 }}>
-              Customer Health Breakdown
-            </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 12, color: 'var(--label)' }}>On Track</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#10B981' }}>{summary?.on_track || 0}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 12, color: 'var(--label)' }}>Due Soon</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#F59E0B' }}>{summary?.due_soon || 0}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: 12, color: 'var(--label)' }}>Overdue</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#EF4444' }}>{summary?.overdue || 0}</span>
-              </div>
-            </div>
-            <span style={{ position: 'absolute', right: 16, bottom: 16, fontSize: 48, fontWeight: 900, color: 'rgba(23,70,212,0.06)' }}>⚡</span>
-          </div>
-        </div>
-
-        {/* AI Insight Cards - Color coded by severity */}
+        {/* AI Insight Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24, marginBottom: 32 }}>
           {insights.map((insight, i) => {
             const colors = getInsightColor(insight.tag, insight.priority)
             return (
-              <div key={i} className="card" style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
-                borderRadius: 16
-              }}>
+              <div key={i} className="card" style={{ display: 'flex', flexDirection: 'column', gap: 12, borderRadius: 16 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{
                     padding: '4px 10px', borderRadius: 999, fontSize: 12, fontWeight: 600,
-                    background: colors.tagBg,
-                    color: colors.tagColor
+                    background: colors.tagBg, color: colors.tagColor
                   }}>{insight.tag}</span>
                   <span style={{ fontSize: 12, color: colors.priorityColor, fontWeight: 500 }}>{insight.priority}</span>
                 </div>
@@ -262,17 +211,10 @@ export default function Insights() {
                 <p style={{ fontSize: 14, color: 'var(--body)', lineHeight: 1.6 }}>{insight.body}</p>
                 <button
                   style={{
-                    alignSelf: 'flex-start',
-                    marginTop: 8,
-                    background: colors.buttonColor,
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: 40,
-                    padding: '8px 20px',
-                    fontSize: 13,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease'
+                    alignSelf: 'flex-start', marginTop: 8,
+                    background: colors.buttonColor, color: 'white',
+                    border: 'none', borderRadius: 40, padding: '8px 20px',
+                    fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s ease'
                   }}
                   onClick={() => handleCreateCampaign(insight)}>
                   Create Campaign →
@@ -291,9 +233,8 @@ export default function Insights() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--body)' }}>
             <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#22C55E', display: 'inline-block' }} />
-            Insights generated by Groq (Llama 3.1) · Based on {total} customer records · Replenishment computed live from purchase dates
+            Replenishment computed live from purchase dates · Powered by Groq (Llama 3.1)
           </div>
-
         </div>
 
       </main>

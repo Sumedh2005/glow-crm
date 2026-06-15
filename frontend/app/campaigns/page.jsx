@@ -34,6 +34,132 @@ function commBadge(status) {
 const BAR_HEIGHTS = [40, 65, 45, 90, 75, 35, 55]
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
+// Skeleton Loader Components
+function CampaignRowSkeleton() {
+  return (
+    <tr style={{ borderBottom: '1px solid var(--border)' }}>
+      <td style={{ padding: '16px 24px' }}>
+        <div style={{ 
+          width: '70%', 
+          height: 16, 
+          background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+          backgroundSize: '200% 100%',
+          animation: 'shimmer 1.5s infinite',
+          borderRadius: 4
+        }} />
+      </td>
+      <td style={{ padding: '16px 24px' }}>
+        <div style={{ 
+          width: '60%', 
+          height: 16, 
+          background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+          backgroundSize: '200% 100%',
+          animation: 'shimmer 1.5s infinite',
+          borderRadius: 4
+        }} />
+      </td>
+      <td style={{ padding: '16px 24px' }}>
+        <div style={{ 
+          width: '50%', 
+          height: 16, 
+          background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+          backgroundSize: '200% 100%',
+          animation: 'shimmer 1.5s infinite',
+          borderRadius: 4
+        }} />
+      </td>
+      <td style={{ padding: '16px 24px', textAlign: 'right' }}>
+        <div style={{ 
+          width: 40, 
+          height: 16, 
+          marginLeft: 'auto',
+          background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+          backgroundSize: '200% 100%',
+          animation: 'shimmer 1.5s infinite',
+          borderRadius: 4
+        }} />
+      </td>
+      <td style={{ padding: '16px 24px', textAlign: 'right' }}>
+        <div style={{ 
+          width: 40, 
+          height: 16, 
+          marginLeft: 'auto',
+          background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+          backgroundSize: '200% 100%',
+          animation: 'shimmer 1.5s infinite',
+          borderRadius: 4
+        }} />
+      </td>
+      <td style={{ padding: '16px 24px', textAlign: 'right' }}>
+        <div style={{ 
+          width: 40, 
+          height: 16, 
+          marginLeft: 'auto',
+          background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+          backgroundSize: '200% 100%',
+          animation: 'shimmer 1.5s infinite',
+          borderRadius: 4
+        }} />
+      </td>
+      <td style={{ padding: '16px 24px', textAlign: 'right' }}>
+        <div style={{ 
+          width: 40, 
+          height: 16, 
+          marginLeft: 'auto',
+          background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+          backgroundSize: '200% 100%',
+          animation: 'shimmer 1.5s infinite',
+          borderRadius: 4
+        }} />
+      </td>
+      <td style={{ padding: '16px 24px' }}>
+        <div style={{ 
+          width: 60, 
+          height: 24, 
+          background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+          backgroundSize: '200% 100%',
+          animation: 'shimmer 1.5s infinite',
+          borderRadius: 12
+        }} />
+      </td>
+      <td style={{ padding: '16px 24px', textAlign: 'right' }}>
+        <div style={{ 
+          width: 60, 
+          height: 24, 
+          marginLeft: 'auto',
+          background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+          backgroundSize: '200% 100%',
+          animation: 'shimmer 1.5s infinite',
+          borderRadius: 4
+        }} />
+      </td>
+    </tr>
+  )
+}
+
+function HeaderSkeleton() {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+      <div style={{ 
+        width: 150, 
+        height: 28, 
+        background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+        backgroundSize: '200% 100%',
+        animation: 'shimmer 1.5s infinite',
+        borderRadius: 8
+      }} />
+      <div style={{ 
+        width: 120, 
+        height: 36, 
+        background: 'linear-gradient(90deg, #DBEAFE 25%, #BFDBFE 50%, #DBEAFE 75%)',
+        backgroundSize: '200% 100%',
+        animation: 'shimmer 1.5s infinite',
+        borderRadius: 40
+      }} />
+    </div>
+  )
+}
+
 export default function Campaigns() {
   const router = useRouter()
   const [campaigns, setCampaigns] = useState([])
@@ -298,11 +424,46 @@ export default function Campaigns() {
     setSelectedCampaign(null)
   }
 
+  // Loading state with light blue skeleton loaders
   if (loading) return (
     <div style={{ display: 'flex' }}>
       <Sidebar />
-      <main className="main-content" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ color: 'var(--label)' }}>Loading...</div>
+      <main className="main-content" style={{ fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
+        <HeaderSkeleton />
+        <div className="card" style={{ padding: 0, overflow: 'hidden', borderRadius: 16 }}>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                  {['Campaign Name', 'Segment', 'Channel', 'Sent', 'Delivered', 'Opened', 'Clicked', 'Status', ''].map((h, i) => (
+                    <th key={i} style={{
+                      textAlign: i >= 3 && i <= 6 ? 'right' : 'left',
+                      padding: '16px 24px',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      color: 'var(--label)'
+                    }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[1, 2, 3, 4, 5].map(i => <CampaignRowSkeleton key={i} />)}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Shimmer Animation CSS */}
+        <style jsx>{`
+          @keyframes shimmer {
+            0% {
+              background-position: 200% 0;
+            }
+            100% {
+              background-position: -200% 0;
+            }
+          }
+        `}</style>
       </main>
     </div>
   )
