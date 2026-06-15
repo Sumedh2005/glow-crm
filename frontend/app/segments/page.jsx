@@ -37,12 +37,12 @@ const suggestionPrompts = [
   },
   {
     id: 2,
-    text: "Skincare enthusiasts who bought serums and moisturisers in last 30 days",
+    text: "Skincare enthusiasts who bought sunscreens in the last 30 days",
     icon: <Users size={14} />
   },
   {
     id: 3,
-    text: "VIP customers with total spend above ₹10000 and active in last 3 months",
+    text: "customers who moisturizer and are almost gonna complete the cycle",
     icon: <TrendingUp size={14} />
   }
 ]
@@ -438,7 +438,7 @@ export default function Segments() {
           <textarea
             value={prompt}
             onChange={e => setPrompt(e.target.value)}
-            placeholder="e.g. customers who bought Vitamin C Serum but not SPF50, with AOV above ₹1500, who haven't purchased in 30 days"
+            placeholder="Type something..."
             style={{
               width: '100%', height: 120, padding: 16,
               borderRadius: 12, border: '1px solid var(--border)',
